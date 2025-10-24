@@ -1001,7 +1001,7 @@ def calculate_daily_profits():
                 ''', (daily_profit, investment['user_id']))
 
                 # Update total earned
-                current_earned = investment.get('total_earned', 0) or 0
+                current_earned = investment['total_earned'] if investment['total_earned'] else 0
                 new_total_earned = current_earned + daily_profit
                 conn.execute('''
                     UPDATE user_investments 
@@ -1043,7 +1043,7 @@ def calculate_daily_profits():
                 ''', (daily_profit, bot['user_id']))
 
                 # Mettre à jour les profits totaux du bot
-                current_profit = bot.get('total_profit', 0) or 0
+                current_profit = bot['total_profit'] if bot['total_profit'] else 0
                 new_total_profit = current_profit + daily_profit
                 conn.execute('''
                     UPDATE user_trading_bots 
@@ -1088,7 +1088,7 @@ def calculate_daily_profits():
                 ''', (daily_profit, copy_trade['user_id']))
 
                 # Mettre à jour les profits totaux du copy trade
-                current_profit = copy_trade.get('total_profit', 0) or 0
+                current_profit = copy_trade['total_profit'] if copy_trade['total_profit'] else 0
                 new_total_profit = current_profit + daily_profit
                 conn.execute('''
                     UPDATE user_copy_trading 
