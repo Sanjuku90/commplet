@@ -1,1 +1,1 @@
-web: python render_start.py
+web: python render_optimized.py

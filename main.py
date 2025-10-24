@@ -3419,28 +3419,32 @@ if __name__ == '__main__':
     update_admin_password('a@gmail.com', 'aaaaaa')
 
     # Setup scheduler for daily profit calculation and backup
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(
-        func=calculate_daily_profits,
-        trigger="cron",
-        hour=0,
-        minute=0,
-        id='daily_profits'
-    )
-    
-    # Sauvegarde périodique toutes les 30 minutes si Replit DB disponible
-    if REPLIT_DB_AVAILABLE:
+    # Désactiver le scheduler sur Render pour éviter les erreurs
+    if not os.environ.get('DISABLE_SCHEDULER'):
+        scheduler = BackgroundScheduler()
         scheduler.add_job(
-            func=backup_critical_data,
-            trigger="interval",
-            minutes=30,
-            id='backup_data'
+            func=calculate_daily_profits,
+            trigger="cron",
+            hour=0,
+            minute=0,
+            id='daily_profits'
         )
-    
-    scheduler.start()
+        
+        # Sauvegarde périodique toutes les 30 minutes si Replit DB disponible
+        if REPLIT_DB_AVAILABLE:
+            scheduler.add_job(
+                func=backup_critical_data,
+                trigger="interval",
+                minutes=30,
+                id='backup_data'
+            )
+        
+        scheduler.start()
 
-    # Shutdown scheduler when exiting the app
-    atexit.register(lambda: scheduler.shutdown())
+        # Shutdown scheduler when exiting the app
+        atexit.register(lambda: scheduler.shutdown())
+    else:
+        print("⚠️ Scheduler désactivé pour Render")
 
     # Configuration pour Render
     port = int(os.environ.get('PORT', 5000))
