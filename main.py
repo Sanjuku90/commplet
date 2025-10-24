@@ -3442,4 +3442,8 @@ if __name__ == '__main__':
     # Shutdown scheduler when exiting the app
     atexit.register(lambda: scheduler.shutdown())
 
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Configuration pour Render
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_ENV') != 'production'
+    
+    app.run(host='0.0.0.0', port=port, debug=debug)

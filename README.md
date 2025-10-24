@@ -87,7 +87,23 @@ investment-platform/
 
 ## 🚀 Déploiement
 
-Pour déployer en production :
+### Déploiement sur Render (Recommandé)
+
+1. **Connectez votre dépôt GitHub à Render**
+   - Allez sur [render.com](https://render.com)
+   - Créez un nouveau "Web Service"
+   - Connectez votre dépôt GitHub : `https://github.com/Sanjuku90/commplet.git`
+
+2. **Configuration Render**
+   - **Build Command** : `pip install -r requirements.txt`
+   - **Start Command** : `gunicorn --bind 0.0.0.0:$PORT --workers 4 --timeout 120 main:app`
+   - **Python Version** : 3.11+
+
+3. **Variables d'environnement sur Render**
+   - `FLASK_ENV` = `production`
+   - `SECRET_KEY` = (généré automatiquement par Render)
+
+### Déploiement local
 
 1. **Variables d'environnement**
    ```bash
